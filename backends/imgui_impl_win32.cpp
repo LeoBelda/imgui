@@ -90,6 +90,8 @@
 #include <tchar.h>
 #include <dwmapi.h>
 
+#include "OL/IO/Display/DisplayPC.h"
+
 // Using XInput for gamepad (will load DLL dynamically)
 #ifndef IMGUI_IMPL_WIN32_DISABLE_GAMEPAD
 #include <xinput.h>
@@ -1087,10 +1089,16 @@ static void ImGui_ImplWin32_CreateWindow(ImGuiViewport* viewport)
     // Create window
     RECT rect = { (LONG)viewport->Pos.x, (LONG)viewport->Pos.y, (LONG)(viewport->Pos.x + viewport->Size.x), (LONG)(viewport->Pos.y + viewport->Size.y) };
     ::AdjustWindowRectEx(&rect, vd->DwStyle, FALSE, vd->DwExStyle);
-    vd->Hwnd = ::CreateWindowExW(
-        vd->DwExStyle, L"ImGui Platform", L"Untitled", vd->DwStyle,       // Style, class name, window name
-        rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top,    // Window area
-        vd->HwndParent, nullptr, ::GetModuleHandle(nullptr), nullptr);          // Owner window, Menu, Instance, Param
+
+    SChildWindowDesc sDesc;
+    sDesc.m_pParentWindow = parent_window;
+    sDesc.m_R = rect;
+    sDesc.m_nDwStyle = vd->DwStyle;
+    sDesc.m_nDwExStyle = vd->DwExStyle;
+    strcpy_s(sDesc.m_pcName, "ImGui Platform");
+
+    vd->Hwnd = static_cast<DisplayPC*>(Display::Get())->GetWindowThread().CreateChildWindow(sDesc);
+
     vd->HwndOwned = true;
     viewport->PlatformRequestResize = false;
     viewport->PlatformHandle = viewport->PlatformHandleRaw = vd->Hwnd;
@@ -1111,7 +1119,7 @@ static void ImGui_ImplWin32_DestroyWindow(ImGuiViewport* viewport)
             ::SetCapture(bd->hWnd);
         }
         if (vd->Hwnd && vd->HwndOwned)
-            ::DestroyWindow(vd->Hwnd);
+            static_cast<DisplayPC*>(Display::Get())->GetWindowThread().DestroyChildWindow(vd->Hwnd);
         vd->Hwnd = nullptr;
         IM_DELETE(vd);
     }
