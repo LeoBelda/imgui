@@ -32,7 +32,7 @@
 
 //---- Disable all of Dear ImGui or don't implement standard windows/tools.
 // It is very strongly recommended to NOT disable the demo windows and debug tool during development. They are extremely useful in day to day work. Please read comments in imgui_demo.cpp.
-#ifndef ENABLE_TOOLS
+#ifndef ENABLE_IMGUI
 #define IMGUI_DISABLE                                     // Disable everything: all headers and source files will be empty.
 #endif
 //#define IMGUI_DISABLE_DEMO_WINDOWS                        // Disable demo windows: ShowDemoWindow()/ShowStyleEditor() will be empty.
