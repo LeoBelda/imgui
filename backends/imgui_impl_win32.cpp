@@ -1089,15 +1089,10 @@ static void ImGui_ImplWin32_CreateWindow(ImGuiViewport* viewport)
     // Create window
     RECT rect = { (LONG)viewport->Pos.x, (LONG)viewport->Pos.y, (LONG)(viewport->Pos.x + viewport->Size.x), (LONG)(viewport->Pos.y + viewport->Size.y) };
     ::AdjustWindowRectEx(&rect, vd->DwStyle, FALSE, vd->DwExStyle);
-
-    SChildWindowDesc sDesc;
-    sDesc.m_pParentWindow = parent_window;
-    sDesc.m_R = rect;
-    sDesc.m_nDwStyle = vd->DwStyle;
-    sDesc.m_nDwExStyle = vd->DwExStyle;
-    strcpy_s(sDesc.m_pcName, "ImGui Platform");
-
-    vd->Hwnd = static_cast<DisplayPC*>(Display::Get())->GetWindowThread().CreateChildWindow(sDesc);
+    vd->Hwnd = ::CreateWindowEx(
+        vd->DwExStyle, _T("ImGui Platform"), _T("Untitled"), vd->DwStyle,       // Style, class name, window name
+        rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top,    // Window area
+        parent_window, nullptr, ::GetModuleHandle(nullptr), nullptr);           // Parent window, Menu, Instance, Param
 
     vd->HwndOwned = true;
     viewport->PlatformRequestResize = false;
@@ -1119,7 +1114,7 @@ static void ImGui_ImplWin32_DestroyWindow(ImGuiViewport* viewport)
             ::SetCapture(bd->hWnd);
         }
         if (vd->Hwnd && vd->HwndOwned)
-            static_cast<DisplayPC*>(Display::Get())->GetWindowThread().DestroyChildWindow(vd->Hwnd);
+            ::DestroyWindow(vd->Hwnd);
         vd->Hwnd = nullptr;
         IM_DELETE(vd);
     }
