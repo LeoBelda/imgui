@@ -4,9 +4,16 @@
 #include "OL/Camera/CameraManager.h"
 #include "OL/Math/Matrix.h"
 
+#ifdef PLATFORM_DX12
+#include "OL/External/ImGui/backends/imgui_impl_dx12.h"
+#include "OL/Render/Context/ContextDX12.h"
+#endif
+
 #include "ImGuizmo.h"
 
 #include "ImGuiOL.h"
+
+
 
 //--------------------------------------------------------------------------
 //
@@ -39,5 +46,18 @@ void ImGuiOL::DrawGuizmo(Matrix& mMat)
     mMat = mMat4;
 }
 
+//--------------------------------------------------------------------------
+//
+//--------------------------------------------------------------------------
+
+void ImGuiOL::Render(Context* pContext)
+{
+#ifdef PLATFORM_DX12
+    ContextDX12* pContextDX12 = dynamic_cast<ContextDX12*>(pContext);
+    ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), pContextDX12->GetCommandList());
+#else
+    AssertToDo;
+#endif
+}
 
 #endif
