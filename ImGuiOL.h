@@ -13,7 +13,7 @@ namespace ImGuiOL
     void DrawGuizmo(Matrix& mMat);
 
     //--------- Platform
-    void Render(Context* pContext);
+    void Render(const ImDrawData *pData, Context *pContext);
 }
 
 

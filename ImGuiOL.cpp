@@ -50,11 +50,11 @@ void ImGuiOL::DrawGuizmo(Matrix& mMat)
 //
 //--------------------------------------------------------------------------
 
-void ImGuiOL::Render(Context* pContext)
+void ImGuiOL::Render(const ImDrawData* pData, Context* pContext)
 {
 #ifdef PLATFORM_DX12
     ContextDX12* pContextDX12 = dynamic_cast<ContextDX12*>(pContext);
-    ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), pContextDX12->GetCommandList());
+    ImGui_ImplDX12_RenderDrawData(pData, pContextDX12->GetCommandList());
 #else
     AssertToDo;
 #endif
