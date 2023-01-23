@@ -51,7 +51,7 @@ struct ImGui_ImplDX12_InitInfo
 IMGUI_IMPL_API bool     ImGui_ImplDX12_Init(ImGui_ImplDX12_InitInfo* info);
 IMGUI_IMPL_API void     ImGui_ImplDX12_Shutdown();
 IMGUI_IMPL_API void     ImGui_ImplDX12_NewFrame();
-IMGUI_IMPL_API void     ImGui_ImplDX12_RenderDrawData(ImDrawData* draw_data, ID3D12GraphicsCommandList* graphics_command_list);
+IMGUI_IMPL_API void     ImGui_ImplDX12_RenderDrawData(const ImDrawData* draw_data, ID3D12GraphicsCommandList* graphics_command_list);
 
 #ifndef IMGUI_DISABLE_OBSOLETE_FUNCTIONS
 // Legacy initialization API Obsoleted in 1.91.5
