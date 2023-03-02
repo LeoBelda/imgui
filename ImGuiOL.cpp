@@ -13,13 +13,42 @@
 
 #include "ImGuiOL.h"
 
+//--------------------------------------------------------------------------
+//
+//--------------------------------------------------------------------------
 
+bool ImGuiOL :: ColoredButton(const char* pcName, const ColorRGB& pColor, const ImVec2& vSize, bool bSmall)
+{
+    ImGui::PushStyleColor(ImGuiCol_Button, pColor.GetImVec4());
+
+    ColorHSV cHSV = pColor.GetHSV();
+    cHSV.AddVal(0.35f);
+    cHSV.AddSat(-0.35f);
+    ColorRGB cHovered = cHSV.GetRGB();
+    cHSV.AddVal(-0.25f);
+    cHSV.AddSat(0.15f);
+    ColorRGB cActive = cHSV.GetRGB();
+
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, cHovered.GetImVec4());
+    ImGui::PushStyleColor(ImGuiCol_ButtonActive, cActive.GetImVec4());
+
+    const bool bRet = bSmall ? ImGui::SmallButton(pcName) : ImGui::Button(pcName, vSize);
+
+    ImGui::PopStyleColor(3);
+
+    return bRet;
+}
+
+bool ImGuiOL :: ColoredSmallButton(const char* pcName, const ColorRGB& pColor)
+{
+    return ImGuiOL::ColoredButton(pcName, pColor, ImVec2(0.f, 0.f), true);
+}
 
 //--------------------------------------------------------------------------
 //
 //--------------------------------------------------------------------------
 
-void ImGuiOL::DrawGuizmo(Matrix& mMat)
+void ImGuiOL :: DrawGuizmo(Matrix& mMat)
 {
     static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
     static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
@@ -50,7 +79,7 @@ void ImGuiOL::DrawGuizmo(Matrix& mMat)
 //
 //--------------------------------------------------------------------------
 
-void ImGuiOL::Render(const ImDrawData* pData, Context* pContext)
+void ImGuiOL :: Render(const ImDrawData* pData, Context* pContext)
 {
 #ifdef PLATFORM_DX12
     ContextDX12* pContextDX12 = dynamic_cast<ContextDX12*>(pContext);
