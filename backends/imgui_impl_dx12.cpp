@@ -51,8 +51,6 @@
 #ifndef IMGUI_DISABLE
 #include "imgui_impl_dx12.h"
 
-#ifndef IMGUI_DISABLE
-
 // DirectX
 #include <d3d12.h>
 #include <dxgi1_4.h>

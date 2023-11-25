@@ -853,14 +853,6 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandlerEx(HWND hwnd, UINT msg, WPA
             io.AddInputCharacter(wch);
         }
         return 0;
-<<<<<<< HEAD
-    case WM_SETCURSOR:
-        // This is required to restore cursor when transitioning from e.g resize borders to client area.
-        if (LOWORD(lParam) == HTCLIENT && ImGui_ImplWin32_UpdateMouseCursor(io, bd->LastMouseCursor))
-            return 1;
-        return 0;
-=======
->>>>>>> e4a426cf (Win32: mouse cursor update delegated to the engine)
     case WM_DEVICECHANGE:
 #ifndef IMGUI_IMPL_WIN32_DISABLE_GAMEPAD
         if ((UINT)wParam == DBT_DEVNODES_CHANGED)
@@ -1095,7 +1087,7 @@ static void ImGui_ImplWin32_CreateWindow(ImGuiViewport* viewport)
     vd->Hwnd = ::CreateWindowEx(
         vd->DwExStyle, _T("ImGui Platform"), _T("Untitled"), vd->DwStyle,       // Style, class name, window name
         rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top,    // Window area
-        parent_window, nullptr, ::GetModuleHandle(nullptr), nullptr);           // Parent window, Menu, Instance, Param
+        vd->HwndParent, nullptr, ::GetModuleHandle(nullptr), nullptr);           // Parent window, Menu, Instance, Param
 
     vd->HwndOwned = true;
     viewport->PlatformRequestResize = false;
