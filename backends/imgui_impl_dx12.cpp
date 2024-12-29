@@ -253,7 +253,7 @@ static inline void SafeRelease(T*& res)
 }
 
 // Render function
-void ImGui_ImplDX12_RenderDrawData(const ImDrawData* draw_data, ID3D12GraphicsCommandList* ctx)
+void ImGui_ImplDX12_RenderDrawData(const ImDrawData* draw_data, ID3D12GraphicsCommandList* command_list)
 {
     // Avoid rendering when minimized
     if (draw_data->DisplaySize.x <= 0.0f || draw_data->DisplaySize.y <= 0.0f)

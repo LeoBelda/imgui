@@ -257,7 +257,7 @@ void    ImGui_ImplWin32_Shutdown()
     IM_DELETE(bd);
 }
 
-static bool ImGui_ImplWin32_UpdateMouseCursor(ImGuiIO& io, ImGuiMouseCursor imgui_cursor)
+bool ImGui_ImplWin32_UpdateMouseCursor(ImGuiIO& io, ImGuiMouseCursor imgui_cursor)
 {
     if (io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange)
         return false;
